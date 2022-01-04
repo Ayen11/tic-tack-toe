@@ -1,16 +1,15 @@
 const gameboard = (() => {
     
-    let boardArray = ["x","x","o","x","x","o","x","x","x","x"];
+    let boardArray = ["","","","","","","","","",""];
     const boardRef = document.querySelector("#boardContainer");
     
     const makeBoard = () => {
-        for (let i = 1; i <= 9; i++) {
+        for (let i = 0; i <= 8; i++) {
         const inGridbtn = Button(i, boardRef);
-        console.log(inGridbtn.getIndex());
+        //console.log(inGridbtn.getIndex());
+        inGridbtn.setContent(boardArray[i]);
     }
 };
-    
-    
     
     return {
         makeBoard
@@ -19,10 +18,14 @@ const gameboard = (() => {
 
 
 })();
-//aa
+
 
 const Button = (index, boardRef) => {
+    
+    let checked = false;
     const getIndex = () => index;
+
+
     let btnRef = document.createElement('button');
         btnRef.classList.add('ButtonBoard');
         boardRef.append(btnRef);
@@ -31,8 +34,31 @@ const Button = (index, boardRef) => {
         btnRef.textContent = content;
     };
 
-    return {setContent, getIndex}
+    btnRef.addEventListener('click', () => {
+        if (checked == false) {
+            setContent(index)
+            checked = true;  
+        }
+    }) 
+
+    return {setContent, getIndex }
 };
  
- gameboard.makeBoard();
- Button.getIndex;
+const Player = (nameP, marker) => {
+    this.nameP = nameP;
+    this.marker = marker;
+    const getName = () => nameP;
+    const getMarker = () => marker
+    return {nameP, marker, getName, getMarker}
+};
+
+const Gamemode = (() => {
+    const playGame = () => {
+        gameboard.makeBoard();
+    };
+
+    return {playGame,}
+})();
+
+ 
+Gamemode.playGame();
