@@ -34,9 +34,10 @@ const Button = (index, boardRef) => {
         btnRef.textContent = content;
     };
 
-    btnRef.addEventListener('click', () => {
+    btnRef.addEventListener('click', () => {    //button clicked board
         if (checked == false) {
-            setContent(index)
+            setContent(Gamemode.getMarker())
+            Gamemode.setTurn(Gamemode.getMarker());
             checked = true;  
         }
     }) 
@@ -53,12 +54,39 @@ const Player = (nameP, marker) => {
 };
 
 const Gamemode = (() => {
+    const XBtn = document.querySelector("#X");
+    const YBtn = document.querySelector("#O");
+    let turnMarker = "aa"
+    const getMarker = () =>  {return turnMarker;};
+    
     const playGame = () => {
         gameboard.makeBoard();
+        setTurn("X");
     };
 
-    return {playGame,}
+    const setTurn = (Turn) => {
+
+        //console.log("setting turn");
+        
+        if (Turn == "O") {
+        XBtn.classList.add("selected");
+        YBtn.classList.remove("selected");
+        turnMarker = "X";
+    }
+        if (Turn =="X") {
+        YBtn.classList.add("selected");
+        XBtn.classList.remove("selected");
+        turnMarker = "O";
+        }
+
+
+        return turnMarker;
+    };
+
+    
+    return {playGame, getMarker, setTurn}
 })();
 
  
 Gamemode.playGame();
+console.log(Gamemode.getMarker());
