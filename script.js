@@ -1,6 +1,6 @@
 const gameboard = (() => {
     
-    let boardArray = ["","","","","","","","","",""];
+    let boardArray = [" "," "," "," "," "," "," "," "," "];
     const boardRef = document.querySelector("#boardContainer");
     
     const makeBoard = () => {
@@ -12,7 +12,8 @@ const gameboard = (() => {
 };
     
     return {
-        makeBoard
+        makeBoard,
+        boardArray,
     };
     
 
@@ -36,9 +37,16 @@ const Button = (index, boardRef) => {
 
     btnRef.addEventListener('click', () => {    //button clicked board
         if (checked == false) {
+            
+            gameboard.boardArray.splice(index, 1 , Gamemode.getMarker());
             setContent(Gamemode.getMarker())
             Gamemode.setTurn(Gamemode.getMarker());
-            checked = true;  
+            
+            checked = true; 
+            Gamemode.checkBoard();
+
+
+            //console.table(gameboard.boardArray); 
         }
     }) 
 
@@ -49,14 +57,15 @@ const Player = (nameP, marker) => {
     this.nameP = nameP;
     this.marker = marker;
     const getName = () => nameP;
-    const getMarker = () => marker
+    const getMarker = () => marker;
     return {nameP, marker, getName, getMarker}
 };
 
 const Gamemode = (() => {
+
     const XBtn = document.querySelector("#X");
     const YBtn = document.querySelector("#O");
-    let turnMarker = "aa"
+    let turnMarker = "aa";
     const getMarker = () =>  {return turnMarker;};
     
     const playGame = () => {
@@ -83,8 +92,34 @@ const Gamemode = (() => {
         return turnMarker;
     };
 
-    
-    return {playGame, getMarker, setTurn}
+
+    const checkForRows = (boardRef) => {
+        for (let i = 0; i < 3; i++) {
+            let row = [];
+            for (let j = 0; j < 3; j++) {
+                row.push(boardRef[j]);
+            }
+
+            if (row.every(field => field == "X") || row.every(field => field == "O" )){
+                console.log(row[1] + ' has won');
+                }
+            };
+        };
+
+
+    const checkBoard = () => {
+        console.log('checking');
+        
+        boardRef = gameboard.boardArray;
+
+        console.table(boardRef);
+        
+        checkForRows(boardRef);
+        
+    };
+
+
+    return {playGame, getMarker, setTurn, checkBoard, checkForRows}
 })();
 
  
